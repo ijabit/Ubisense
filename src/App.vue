@@ -1,10 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -20,22 +16,21 @@
     </v-app-bar>
 
     <v-main>
-      <Home/>
+      <Home />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Home from './views/Home.vue';
+import Vue from "vue";
+import Home from "./views/Home.vue";
 
 export default Vue.extend({
-  name: 'App',
+  name: "App",
 
   components: {
     Home,
   },
-
   data: () => ({
     //
   }),
