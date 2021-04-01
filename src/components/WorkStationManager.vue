@@ -1,5 +1,4 @@
 <template>
-  <v-container>
     <v-row>
       <v-col
         md="6"
@@ -10,7 +9,6 @@
         <work-station :workstation="workstation" />
       </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script lang="ts">
@@ -23,31 +21,10 @@ export default Vue.extend({
 
   data: () => ({
     workstations: [
-      {
-        name: "Assembly A",
-        cycleTimeHrs: 1.5,
-        currentProduct: {
-          id: "604676cf40ef9e9137f831e7",
-          entryTime: 1615229929818,
-        },
-      },
-      {
-        name: "Assembly B",
-        cycleTimeHrs: 1,
-        currentProduct: {
-          id: "604676cf40ef9e9137f831e7",
-          entryTime: 1615230589818,
-        },
-      },
+      { name: "Assembly A", cycleTimeHrs: 1.5, currentProduct: { id: "604676cf40ef9e9137f831e7", entryTime: 1617248812773 } },
+      { name: "Assembly B", cycleTimeHrs: 1, currentProduct: { id: "604676cf40ef9e9137f831e7", entryTime: 1617249472773 } },
       { name: "Assembly C", cycleTimeHrs: 2, currentProduct: null },
-      {
-        name: "Inspection",
-        cycleTimeHrs: 0.5,
-        currentProduct: {
-          id: "604676cf40ef9e9137f831e7",
-          entryTime: 1615231489818,
-        },
-      },
+      { name: "Inspection", cycleTimeHrs: 0.5, currentProduct: { id: "604676cf40ef9e9137f831e7", entryTime: 1617250372773 } },
     ],
   }),
 });

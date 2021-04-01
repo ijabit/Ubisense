@@ -1,21 +1,22 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
+      <div class="d-flex align-center flex-grow-1">
         <v-img
           alt="Vuetify Logo"
-          class="shrink mr-2"
+          class="shrink mr-2 hidden-sm-and-down float-left"
           contain
           src="https://ubisense.com/wp-content/uploads/2019/11/Ubisene-logo-200px.png"
           transition="scale-transition"
           width="200"
         />
+        <div class="title-spacer hidden-sm-and-down"></div>
+        <div class="flex-grow-1 text-center text-no-wrap text-h5 app-bar-title float-left">Work Stations</div>
       </div>
 
-      <v-spacer></v-spacer>
     </v-app-bar>
 
-    <v-main>
+    <v-main style="height: 100%">
       <Home />
     </v-main>
   </v-app>
@@ -36,3 +37,8 @@ export default Vue.extend({
   }),
 });
 </script>
+<style lang="scss" scoped>
+  .title-spacer {
+    margin-left: -200px
+  }
+</style>

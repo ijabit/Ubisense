@@ -1,6 +1,8 @@
 <template>
-  <div class="home">
-    <work-station-manager />
+  <div class="home grey lighten-2" style="height: 100%">
+    <v-container>
+      <work-station-manager />
+    </v-container>
   </div>
 </template>
 
