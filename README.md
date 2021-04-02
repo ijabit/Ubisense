@@ -28,4 +28,4 @@ npm run lint
 ```
 
 ### Live Demo
-See the [Live Demo](https://cli.vuejs.org/config/).
+See the [Live Demo](https://ijabit.github.io/ubisense/).
