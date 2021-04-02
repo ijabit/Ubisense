@@ -1,15 +1,14 @@
 <template>
   <v-card class="mt-6" style="height: 100%">
     <div class="blue-grey darken-4">
-      <v-card-title class="white--text justify-center">{{ workstation.name }}</v-card-title>
+      <v-card-title class="white--text justify-center">{{
+        workstation.name
+      }}</v-card-title>
     </div>
     <div v-if="engine">
       <v-row class="pa-5">
         <v-col class="align-self-center col-xs-12 col-sm-5">
-          <v-img
-            :src="engine.image"
-            class=" ma-4 ml-0"
-          ></v-img>
+          <v-img :src="engine.image" class="ma-4 ml-0"></v-img>
         </v-col>
         <v-col>
           <v-row>
@@ -35,8 +34,18 @@
           <v-row>
             <v-col>
               <span class="grey--text text-no-wrap mr-2">Time Elapsed</span>
-              <v-icon v-if="engineCycleWarning" color="orange darken-2" :title="`Elapsed Minutes: ${timeElapsedInMinutes}`">mdi-thermometer-alert</v-icon>
-              <v-icon v-if="engineCycleError" color="red darken-2" :title="`Elapsed Minutes: ${timeElapsedInMinutes}`">mdi-alert-circle</v-icon>
+              <v-icon
+                v-if="engineCycleWarning"
+                color="orange darken-2"
+                :title="`Elapsed Minutes: ${timeElapsedInMinutes}`"
+                >mdi-thermometer-alert</v-icon
+              >
+              <v-icon
+                v-if="engineCycleError"
+                color="red darken-2"
+                :title="`Elapsed Minutes: ${timeElapsedInMinutes}`"
+                >mdi-alert-circle</v-icon
+              >
               <v-progress-linear
                 v-model="cyclePercent"
                 :color="cycleColor"
@@ -48,18 +57,24 @@
         </v-col>
       </v-row>
     </div>
-    <v-row v-else class="pa-5" align="center" justify="center" style="height: 100%">
+    <v-row
+      v-else
+      class="pa-5"
+      align="center"
+      justify="center"
+      style="height: 100%"
+    >
       <p class="headline text-no-wrap">No Product</p>
     </v-row>
   </v-card>
 </template>
 
 <script lang="ts">
+import moment from "moment";
 import store from "@/api/store";
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "WorkStation",
   props: {
     workstation: {
       type: Object,
@@ -70,15 +85,16 @@ export default Vue.extend({
     cycleColor() {
       if (this.engineCycleWarning) {
         return "orange";
-      } if (this.engineCycleError) {
+      }
+      if (this.engineCycleError) {
         return "red";
       }
       return "teal";
     },
-    engineCycleWarning() {
+    engineCycleWarning(): boolean {
       return this.cyclePercent >= 70 && this.cyclePercent < 95;
     },
-    engineCycleError() {
+    engineCycleError(): boolean {
       return this.cyclePercent >= 95;
     },
     engines(): any[] {
@@ -92,14 +108,18 @@ export default Vue.extend({
       );
       return typeof engine === "undefined" || engine === null ? null : engine;
     },
-    timeElapsedInMinutes() {
-      const timeElapsedInMs = store.state.currentDateTime - new Date(this.workstation.currentProduct.entryTime);
-      const timeElapsedInMinutes = Math.round((timeElapsedInMs / 1000) / 60);
+    timeElapsedInMinutes(): number {
+      const timeElapsedInMinutes = moment(store.state.currentDateTime).diff(
+        moment(new Date(this.workstation.currentProduct.entryTime)),
+        "minutes",
+      );
 
       return timeElapsedInMinutes;
     },
-    cyclePercent() {
-      return (this.timeElapsedInMinutes / (this.workstation.cycleTimeHrs * 60)) * 100;
+    cyclePercent(): number {
+      return (
+        (this.timeElapsedInMinutes / (this.workstation.cycleTimeHrs * 60)) * 100
+      );
     },
   },
 });
