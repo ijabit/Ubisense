@@ -34,11 +34,14 @@
           </v-row>
           <v-row>
             <v-col>
-              <span class="grey--text text-no-wrap">Time Elapsed</span>
+              <span class="grey--text text-no-wrap mr-2">Time Elapsed</span>
+              <v-icon v-if="engineCycleWarning" color="orange darken-2" :title="`Elapsed Minutes: ${timeElapsedInMinutes}`">mdi-thermometer-alert</v-icon>
+              <v-icon v-if="engineCycleError" color="red darken-2" :title="`Elapsed Minutes: ${timeElapsedInMinutes}`">mdi-alert-circle</v-icon>
               <v-progress-linear
-                v-model="power"
-                color="teal"
+                v-model="cyclePercent"
+                :color="cycleColor"
                 height="10"
+                :title="`Elapsed Minutes: ${timeElapsedInMinutes}`"
               ></v-progress-linear>
             </v-col>
           </v-row>
@@ -52,6 +55,7 @@
 </template>
 
 <script lang="ts">
+import store from "@/api/store";
 import Vue from "vue";
 
 export default Vue.extend({
@@ -62,21 +66,24 @@ export default Vue.extend({
       required: true,
     },
   },
-  data: () => ({
-    power: 70,
-    engines: [{
-      id: "604676cf40ef9e9137f831e7", serialNumber: "121612129", model: "5R", image: "https://i.postimg.cc/MKbJTkrx/5R.jpg",
-    }, {
-      id: "60467703c7e7ca6bca3b598c", serialNumber: "342612171", model: "2R", image: "https://i.postimg.cc/RVzz4CdX/2R.jpg",
-    }, {
-      id: "6046770b70a8ffd3e95e7dc8", serialNumber: "9232842345", model: "8R", image: "https://i.postimg.cc/cLxytDV3/8R.png",
-    }, {
-      id: "604677132b5381c3d19a0dcc", serialNumber: "784213414", model: "5R", image: "https://i.postimg.cc/MKbJTkrx/5R.jpg",
-    }, {
-      id: "6046771b40c3fce9a6f8c11f", serialNumber: "4315112123", model: "2R", image: "https://i.postimg.cc/RVzz4CdX/2R.jpg",
-    }],
-  }),
   computed: {
+    cycleColor() {
+      if (this.engineCycleWarning) {
+        return "orange";
+      } if (this.engineCycleError) {
+        return "red";
+      }
+      return "teal";
+    },
+    engineCycleWarning() {
+      return this.cyclePercent >= 70 && this.cyclePercent < 95;
+    },
+    engineCycleError() {
+      return this.cyclePercent >= 95;
+    },
+    engines(): any[] {
+      return store.state.engines;
+    },
     engine(): any {
       const engine = this.engines.find(
         (x: any): any => this.workstation
@@ -84,6 +91,15 @@ export default Vue.extend({
           && x.id === this.workstation.currentProduct.id,
       );
       return typeof engine === "undefined" || engine === null ? null : engine;
+    },
+    timeElapsedInMinutes() {
+      const timeElapsedInMs = store.state.currentDateTime - new Date(this.workstation.currentProduct.entryTime);
+      const timeElapsedInMinutes = Math.round((timeElapsedInMs / 1000) / 60);
+
+      return timeElapsedInMinutes;
+    },
+    cyclePercent() {
+      return (this.timeElapsedInMinutes / (this.workstation.cycleTimeHrs * 60)) * 100;
     },
   },
 });
