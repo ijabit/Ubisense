@@ -28,4 +28,4 @@ npm run lint
 ```
 
 ### Live Demo
-See the [Live Demo](https://ijabit.github.io/ubisense/).
+See the [Live Demo](https://focused-joliot-ec4cce.netlify.app/).
